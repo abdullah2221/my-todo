@@ -32,6 +32,7 @@ export default function AuthContextProvider(props) {
             //   console.log(user)
             //   console.log("sign in")
               dispatch({type:"LOGIN"})
+              console.log("sign IN")
               // ...
             } else {
               // User is signed out

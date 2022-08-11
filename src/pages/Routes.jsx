@@ -14,7 +14,7 @@ export default function CustomRoutes() {
         <main>
           <Routes >
             <Route path='/*' element={<Frontend />} />
-            <Route path='/authentication/*' element={!isAuthenticated?<Authentication />:  <Navigate to="/dashboard"/>} />
+            <Route path='/authentication/*' element={!isAuthenticated?<Authentication />:  <Navigate to="/dashboard" replace/>} />
             <Route path='/dashboard/*' element={<PrivateRoute Component ={<Dashboard/>}/>} />
 
 
