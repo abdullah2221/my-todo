@@ -6,10 +6,11 @@ import Authentication from "pages/Authentication"
 import { AuthContext } from 'context/AuthContext'
 import PrivateRoute from 'components/PrivateRoute'
 export default function CustomRoutes() {
-  const { authentication } = useContext(AuthContext)
-  const { isAuthenticated } = authentication
+  const { isAuthenticated} = useContext(AuthContext)
+
+  
   return (
-    <>
+    <> 
       <BrowserRouter>
         <main>
           <Routes >

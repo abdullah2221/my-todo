@@ -5,9 +5,8 @@ import { signOut } from 'firebase/auth';
 import { auth } from 'config/firebase';
 export default function Navbar() {
   
-  const {authentication,dispatch} = useContext(AuthContext)
+  const {isAuthenticated,dispatch} = useContext(AuthContext)
  
-  const {isAuthenticated} = authentication
   const handleLogOut=()=>{
     signOut(auth)
     .then(()=>{
@@ -36,6 +35,9 @@ export default function Navbar() {
           </li>
           <li className="nav-item">
             <Link className="nav-link" to="/contact">Contact</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/todos">Todos</Link>
           </li>
           {/* <li className="nav-item dropdown">
             <Link className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
