@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState,useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from 'config/firebase';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from 'context/AuthContext';
 const initialState = { email: ``, password: `` }
 export default function Login() {
     const [state, setState] = useState(initialState)
     const [isProcessing, setIsProcessing] = useState(false)
+    const{dispatch} = useContext(AuthContext)
     const navigate = useNavigate()
     const handleChange = e => {
         setState({ ...state, [e.target.name]: e.target.value })
@@ -21,13 +23,18 @@ export default function Login() {
                 // Signed in 
                 const user = userCredential.user;
                 console.log(user)
+                dispatch({type:"LOGIN",payload:{user}})
+
+                     window.notify("User has beed logged IN succesfully", "success")
                 navigate("/dashboard")
+           
                 // ...
             })
             .catch((error) => {
                 // const errorCode = error.code;
                 // const errorMessage = error.message;
                 console.error(error)
+                window.notify("Something went wrong ", "error")
             }).finally(() => {
                 setIsProcessing(false)
             });

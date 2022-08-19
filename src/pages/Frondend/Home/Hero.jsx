@@ -26,7 +26,7 @@ export default function Hero() {
 
   const handleChange = (e) => {
     setState(s => ({ ...s, [e.target.name]: e.target.value }))
-  
+
 
   }
 
@@ -68,9 +68,9 @@ export default function Hero() {
   const createDocument = async (formData) => {
     setIsProcessing(true)
     try {
-      await setDoc(doc(firestore, "todos", formData.id), formData);
-      window.notify("Todo has beed Added successfully ", "success")
-      setState(initialState)
+        await setDoc(doc(firestore, "todos", formData.id), formData);
+        window.notify("Todo has beed Added successfully ", "success")
+
 
     } catch (err) {
       console.log(err)
@@ -78,53 +78,58 @@ export default function Hero() {
 
     }
     setIsProcessing(false)
+
   }
   return (
-    <div className="py-5 home d-flex justify-content-center align-items-center">
-      <div className="container">
-        <div className="row">
-          <div className="col">
-            <div className="card p-3 p-mb-4 p-lg-5">
-              <form onSubmit={handleSubmit}>
+    <>
+    
 
-                <div className="row mx-2">
-                  <div className="col">
-                    <h2 className="text-center mb-4"> Add todo </h2>
+      <div className="py-5 home d-flex justify-content-center align-items-center">
+        <div className="container">
+          <div className="row">
+            <div className="col">
+              <div className="card p-3 p-mb-4 p-lg-5">
+                <form onSubmit={handleSubmit}>
+
+                  <div className="row mx-2">
+                    <div className="col">
+                      <h2 className="text-center mb-4"> Add todo </h2>
+                    </div>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col-12 col-md-6 mb-3 ">
+                  <div className="row">
+                    <div className="col-12 col-md-6 mb-3 ">
 
-                    <input type="text" className="form-control" name='title' placeholder="Title" onChange={handleChange} />
+                      <input type="text" className="form-control" name='title' placeholder="Title" onChange={handleChange} />
+                    </div>
+                    <div className="col-12 col-md-6 mb-3 ">
+                      <input type="text" className="form-control" name='location' placeholder="Enter Location" onChange={handleChange} />
+                    </div>
                   </div>
-                  <div className="col-12 col-md-6 mb-3 ">
-                    <input type="text" className="form-control" name='location' placeholder="Enter Location" onChange={handleChange} />
+                  <div className="row">
+                    <div className="col mb-3">
+
+                      <textarea className="form-control" name='discription' placeholder="Enter Description" rows="5" onChange={handleChange} />
+
+                    </div>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col mb-3">
-
-                    <textarea className="form-control" name='discription' placeholder="Enter Description" rows="5" onChange={handleChange} />
-
+                  <div className="row">
+                    <div className="col">
+                      <button className='btn btn-danger w-100 ' disabled={isProcessing}>{!isProcessing ?
+                        "Add Todo" :
+                        <div className="spinner-border spinner-border-sm text-primary" role="status"></div>
+                      } </button>
+                    </div>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col">
-                    <button className='btn btn-danger w-100 ' disabled={isProcessing}>{!isProcessing ?
-                      "Add Todo" :
-                      <div className="spinner-border spinner-border-sm text-primary" role="status"></div>
-                    } </button>
-                  </div>
-                </div>
 
 
 
-              </form>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-    </div>
+      </div>
+    </>
   )
 }

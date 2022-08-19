@@ -81,7 +81,10 @@ export default function Register() {
                     email: user.email,
                 });
                 console.log("user document created at firestore")
-                dispatch({ type: "LOGIN" })
+             
+                dispatch({ type: "LOGIN",payload:{user} })
+                window.notify("User has beed Register and login succesfully", "success")
+                
             }
             catch (err) {
                 console.error(err)
