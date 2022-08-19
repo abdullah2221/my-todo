@@ -60,9 +60,6 @@ export default function Hero() {
     createDocument(formData)
 
 
-
-
-
     // console.log(user) 
     // console.log(state)
     // console.log(formData)
@@ -73,6 +70,7 @@ export default function Hero() {
     try {
       await setDoc(doc(firestore, "todos", formData.id), formData);
       window.notify("Todo has beed Added successfully ", "success")
+      setState(initialState)
 
     } catch (err) {
       console.log(err)

@@ -1,6 +1,6 @@
 import { AuthContext } from 'context/AuthContext'
 import React, { useState, useContext, useEffect } from 'react'
-import { getDocs, collection } from "firebase/firestore/lite";
+import { getDocs, collection, deleteDoc, doc} from "firebase/firestore/lite";
 import { firestore } from 'config/firebase';
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 
@@ -19,8 +19,33 @@ export default function Todos() {
   const { user } = useContext(AuthContext)
 
   const [documents, setDocuments] = useState([])
+  const [todo, setTodo] = useState({})
   const [isLoading, setIsLoading] = useState(true)
+  const [isProcessing, setIsProcessing] = useState(true)
+  const [isProcessingDelete, setIsProcessingDelete] = useState(false)
 
+
+  const handleDelete= async(todo)=>{
+    console.log(todo)
+    setIsProcessingDelete(true)
+    try{
+      await deleteDoc(doc(firestore,"todos",todo.id))
+      let newDocuments = documents.filter((doc) => {
+        return doc.id !== todo.id 
+       
+    })
+ 
+    setDocuments(newDocuments)
+    window.notify("Todo has Delete succes fully","success")
+
+
+    }catch(err){
+      console.log(err)
+      window.notify("Something went Wrong","error")
+    }
+    setIsProcessingDelete(false)
+
+  }
 
   const fetchDocument = async () => {
     let array = []
@@ -55,8 +80,8 @@ export default function Todos() {
         <div className="row">
           <div className="col">
             <div className="card p-3 p-mb-4 p-lg-5">
-
-              <Table>
+              {!isLoading
+              ?<Table>
                 <Thead>
                   <Tr>
                     <Th>S. No</Th>
@@ -67,25 +92,18 @@ export default function Todos() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {/* {products.map((product, i) => {
-                                                    return <tr key={i}>
-                                                        <th scope="row">{i + 1}</th>
-                                                        <td>{product.title}</td>
-                                                        <td>{product.price}</td>
-                                                        <td>{product.description}</td>
-                                                        <td>
-                                                            <button className='btn btn-sm btn-info me-2' data-bs-toggle="modal" data-bs-target="#editModal" onClick={() => { handleEdit(product) }}>Update</button>
-                                                            <button className='btn btn-sm btn-danger' onClick={() => { handleDelete(product) }}>Delete</button>
-                                                        </td>
-                                                    </tr>
-                                                })} */}
                   {documents.map((todo, i) => {
                     return <Tr key={i}>
                       <Td>{i +1}</Td>  
                       <Td>{todo.title}</Td>
                       <Td>{todo.location}</Td>
                       <Td>{todo.discription} </Td>
-                      <Td> <button className='btn btn-primary btn-sm m-2'>Edit</button><button className='btn btn-danger btn-sm '>Delete</button></Td>
+                      <Td> <button className='btn btn-primary btn-sm m-2' onClick={()=>{setTodo(todo)}} >Edit</button>
+                      <button className='btn btn-danger btn-sm' disabled={isProcessingDelete} onClick={()=>{handleDelete(todo)}}>{!isProcessingDelete?
+                      "Delete"
+                      :
+                      <div className="spinner-border spinner-border-sm"></div>
+                      }</button></Td>
                     </Tr>
                   })
 
@@ -93,6 +111,8 @@ export default function Todos() {
 
                 </Tbody>
               </Table>
+              : <div className="text-center"><div className="spinner-grow"></div></div>
+              }
             </div>
           </div>
         </div>
